@@ -1,0 +1,69 @@
+# FILE: alamode-fetch
+# FOR: CSCI 442 Project 1, Script 1
+
+hostname=""
+file=""
+directory=""
+output=""
+
+while getopts d:f:n: opt; do
+      case $opt in
+      	   d)	# directory
+		echo "-d, Parameter: $OPTARG"
+		if [ -d $OPTARG ];
+		then
+			echo "Dir $OPTARG exists"
+		else
+			directory=$OPTARG
+			mkdir $OPTARG
+			echo "Created dir $OPTARG"
+		fi
+		;;
+	   f)	# file containing hostnames
+		echo "-f, Parameter: $OPTARG"
+		file=$OPTARG
+		echo "FILE: $file"
+		# loop over contents of file
+		while IFS= read -r p; do
+		      echo $p
+		done <"$file"
+		;;
+	   n)	# hostname
+		echo "-n, Parameter: $OPTARG"
+		hostname=$OPTARG
+		echo "HOSTNAME: $hostname"
+		;;
+      esac
+done
+
+if [ -z "$directory" ];
+then
+	directory=`mktemp -d /tmp/tmp.XXXXXXXX`	
+	echo "Output file created: $directory"
+fi
+
+
+
+# SSH connection
+ssh apatel@imagine.mines.edu
+ssh $hostname
+
+
+
+
+# How many users are currently logged in
+echo "Number of users logged in: ";  who | wc -l
+
+# How many processes are currently executing
+echo top | sed -n '2p' # 2nd line of output from top
+
+# Average load for last 1,5,and 15 minutes
+echo "Load times: " ; uptime
+
+# Current CPU clock speed, in GHz
+
+
+
+# Location of output file
+echo "$directory"
+
